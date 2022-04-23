@@ -26,7 +26,7 @@ function Home() {
     <ScrollView style={{ paddingBottom: bottom }}>
       <View style={styles.container}>
         <Title>Información del usuario:</Title>
-        <Paragraph>{JSON.stringify(user, null, 2)}</Paragraph>
+        <Paragraph>{JSON.stringify(user?.providerData, null, 2)}</Paragraph>
         <Button
           mode='contained'
           onPress={() => run(logout())}

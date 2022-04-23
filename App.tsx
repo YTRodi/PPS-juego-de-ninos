@@ -5,7 +5,7 @@ import AuthenticatedApp from './src/AuthenticatedApp';
 import UnauthenticatedApp from './src/UnauthenticatedApp';
 
 import { LogBox } from 'react-native';
-LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['AsyncStorage']);
 
 export default function App() {
   return (
