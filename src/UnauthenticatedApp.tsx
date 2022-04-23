@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { TextInput, Button, Paragraph, Caption } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
 import { useFormik } from 'formik';
@@ -85,7 +85,7 @@ function UnauthenticatedApp() {
     const splittedLabel = label.split('');
     return splittedLabel.map((char, index) => (
       <View key={index} style={{ marginRight: 4 }}>
-        <GameBlock text={char} />
+        <GameBlock key={index} text={char} />
       </View>
     ));
   }, [isLoginScreen]);
@@ -97,11 +97,15 @@ function UnauthenticatedApp() {
 
   return (
     <View style={styles.container}>
+      <Image
+        source={require('../assets/images/background.png')}
+        style={styles.backgroundImage}
+      />
+
       <View style={styles.headerContainer}>{renderHeader()}</View>
 
       <View style={styles.formGroup}>
         <TextInput
-          autoFocus
           mode='outlined'
           keyboardType='email-address'
           returnKeyType='next'
@@ -179,8 +183,17 @@ function UnauthenticatedApp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 24,
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'white',
+    paddingHorizontal: 16,
+  },
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    opacity: 0.1,
   },
   headerContainer: {
     flexDirection: 'row',
