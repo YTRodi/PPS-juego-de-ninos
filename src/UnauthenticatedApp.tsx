@@ -1,21 +1,14 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import {
-  Headline,
-  TextInput,
-  Button,
-  Paragraph,
-  Caption,
-} from 'react-native-paper';
+import { TextInput, Button, Paragraph, Caption } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
-
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
 import { useAuth } from './context/AuthProvider';
 import { useAsync, useToggle } from './hooks';
+import { GameBlock } from './components';
 import { mapAuthError } from './helpers';
-import { theme } from './styles';
+import { theme, blockColors } from './styles';
 
 const AuthSchema = Yup.object().shape({
   email: Yup.string()
@@ -27,6 +20,9 @@ const AuthSchema = Yup.object().shape({
 });
 
 const initialValues = { email: '', password: '' };
+const errorColor = theme.colors.error;
+const focusColor = theme.colors.primary;
+const noFocusColor = theme.colors.placeholder;
 
 function UnauthenticatedApp() {
   const { login, register } = useAuth();
@@ -56,25 +52,46 @@ function UnauthenticatedApp() {
     toast.show(errorMessage, { type: 'danger' });
   }
 
+  const label = useMemo(
+    () => (isLoginScreen ? 'LOGIN' : 'REGISTRO'),
+    [isLoginScreen]
+  );
+
+  const extendedBlockColors = useMemo(
+    () => [...blockColors, '#D31F20', '#F0D22E'],
+    []
+  );
+
   const getInputEmailIconColor = useCallback(
-    (isFocused: boolean) =>
-      formErrors.email && touched.email
-        ? theme.colors.error
-        : isFocused
-        ? theme.colors.primary
-        : theme.colors.placeholder,
+    (isFocused: boolean) => getInputIconColor('email', isFocused),
     [formErrors, touched]
   );
 
   const getInputPasswordIconColor = useCallback(
-    (isFocused: boolean) =>
-      formErrors.password && touched.password
-        ? theme.colors.error
-        : isFocused
-        ? theme.colors.primary
-        : theme.colors.placeholder,
+    (isFocused: boolean) => getInputIconColor('password', isFocused),
     [formErrors, touched]
   );
+
+  const getInputIconColor = useCallback(
+    (field: keyof typeof initialValues, isFocused: boolean) => {
+      return formErrors[field] && touched[field]
+        ? errorColor
+        : isFocused
+        ? focusColor
+        : noFocusColor;
+    },
+    [formErrors, touched]
+  );
+
+  const renderHeader = useCallback(() => {
+    const splittedLabel = label.split('');
+    return splittedLabel.map((char, index) => {
+      const randomColor =
+        extendedBlockColors[index % extendedBlockColors.length];
+
+      return <GameBlock key={index} text={char} color={randomColor} />;
+    });
+  }, [isLoginScreen]);
 
   function reset() {
     setIsLoginScreen();
@@ -83,12 +100,11 @@ function UnauthenticatedApp() {
 
   return (
     <View style={styles.container}>
-      <Headline style={styles.title}>
-        {isLoginScreen ? 'Login' : 'Registro'}
-      </Headline>
+      <View style={styles.headerContainer}>{renderHeader()}</View>
 
       <View style={styles.formGroup}>
         <TextInput
+          autoFocus
           mode='outlined'
           keyboardType='email-address'
           returnKeyType='next'
@@ -163,9 +179,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     justifyContent: 'center',
   },
-  title: {
-    color: theme.colors.primary,
-    marginBottom: 16,
+  headerContainer: {
+    flexDirection: 'row',
+    marginBottom: 8,
   },
   textError: {
     color: theme.colors.error,
@@ -174,13 +190,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    marginTop: 18,
+    marginTop: 4,
   },
   captionContainer: {
     marginTop: 8,
   },
   captionText: {
-    color: theme.colors.primary,
+    color: theme.colors.accent,
     fontWeight: 'bold',
   },
 });
