@@ -1,21 +1,17 @@
 {
   "expo": {
-    "name": "PPS-App-2",
-    "slug": "PPS-App-2",
+    "name": "PPS-juego-de-ninos",
+    "slug": "PPS-juego-de-ninos",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
