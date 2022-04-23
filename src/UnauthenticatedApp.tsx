@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Paragraph, Caption } from 'react-native-paper';
 import { useToast } from 'react-native-toast-notifications';
@@ -6,9 +6,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from './context/AuthProvider';
 import { useAsync, useToggle } from './hooks';
-import { GameBlock } from './components';
+import { GameBlock, HardcodedPersons } from './components';
 import { mapAuthError } from './helpers';
-import { theme, blockColors } from './styles';
+import { theme } from './styles';
 
 const AuthSchema = Yup.object().shape({
   email: Yup.string()
@@ -40,6 +40,7 @@ function UnauthenticatedApp() {
     isValidating,
     isValid,
     resetForm,
+    setValues,
   } = useFormik({
     initialValues,
     validationSchema: AuthSchema,
@@ -47,19 +48,16 @@ function UnauthenticatedApp() {
       isLoginScreen ? run(login(formValues)) : run(register(formValues)),
   });
 
-  if (isError) {
-    const errorMessage = mapAuthError(error);
-    toast.show(errorMessage, { type: 'danger' });
-  }
+  useEffect(() => {
+    if (isError) {
+      const errorMessage = mapAuthError(error);
+      toast.show(errorMessage, { type: 'danger' });
+    }
+  }, [isError, error]);
 
   const label = useMemo(
     () => (isLoginScreen ? 'LOGIN' : 'REGISTRO'),
     [isLoginScreen]
-  );
-
-  const extendedBlockColors = useMemo(
-    () => [...blockColors, '#D31F20', '#F0D22E'],
-    []
   );
 
   const getInputEmailIconColor = useCallback(
@@ -85,12 +83,11 @@ function UnauthenticatedApp() {
 
   const renderHeader = useCallback(() => {
     const splittedLabel = label.split('');
-    return splittedLabel.map((char, index) => {
-      const randomColor =
-        extendedBlockColors[index % extendedBlockColors.length];
-
-      return <GameBlock key={index} text={char} color={randomColor} />;
-    });
+    return splittedLabel.map((char, index) => (
+      <View key={index} style={{ marginRight: 4 }}>
+        <GameBlock text={char} />
+      </View>
+    ));
   }, [isLoginScreen]);
 
   function reset() {
@@ -169,6 +166,12 @@ function UnauthenticatedApp() {
           </Caption>
         </Caption>
       </View>
+
+      <HardcodedPersons
+        onSelectPerson={person =>
+          setValues({ email: person.email, password: person.password })
+        }
+      />
     </View>
   );
 }
@@ -194,6 +197,7 @@ const styles = StyleSheet.create({
   },
   captionContainer: {
     marginTop: 8,
+    marginBottom: 40,
   },
   captionText: {
     color: theme.colors.accent,
