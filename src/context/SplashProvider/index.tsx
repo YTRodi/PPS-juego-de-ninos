@@ -38,6 +38,7 @@ function SplashProvider({ children }: { children: React.ReactNode }) {
               source={lottieSource}
               autoPlay
               loop={false}
+              duration={BASE_FADE_ANIMATION_TIME * 2}
               onAnimationFinish={() => {
                 fadeAnimation.hide();
                 setTimeout(() => {
