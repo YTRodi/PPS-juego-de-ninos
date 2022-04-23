@@ -1,14 +1,16 @@
 import { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { GestureResponderEvent, StyleSheet, View } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { blockColors as bc } from '../../styles';
+import Touchable from '../Touchable';
 
 interface Props {
   text: string;
   colors?: string[];
+  onPress?: (event: GestureResponderEvent) => void;
 }
 
-const GameBlock = ({ text, colors = [] }: Props) => {
+const GameBlock = ({ text, colors = [], onPress }: Props) => {
   const blockColors = useMemo(
     () => [...bc, ...colors, '#D31F20', '#F0D22E'],
     []
@@ -18,9 +20,13 @@ const GameBlock = ({ text, colors = [] }: Props) => {
   const randomColor = useMemo(() => blockColors[randomIndex], []);
 
   return (
-    <View style={{ ...styles.container, borderColor: randomColor }}>
-      <Headline style={{ ...styles.text, color: randomColor }}>{text}</Headline>
-    </View>
+    <Touchable onPress={onPress}>
+      <View style={{ ...styles.container, borderColor: randomColor }}>
+        <Headline style={{ ...styles.text, color: randomColor }}>
+          {text}
+        </Headline>
+      </View>
+    </Touchable>
   );
 };
 
