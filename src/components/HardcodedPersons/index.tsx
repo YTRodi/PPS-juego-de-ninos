@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Paragraph } from 'react-native-paper';
+import { Paragraph } from 'react-native-paper';
 import GameBlock from '../GameBlock';
 import Separator from '../Separator';
 
@@ -48,9 +48,11 @@ const HardcodedPersons = ({ onSelectPerson }: Props) => {
 
       <View style={styles.buttonContainer}>
         {persons.map((person, index) => (
-          <Button key={index} onPress={() => onSelectPerson(person)}>
-            <GameBlock text={person.name} />
-          </Button>
+          <GameBlock
+            key={index}
+            text={person.name}
+            onPress={() => onSelectPerson(person)}
+          />
         ))}
       </View>
     </View>
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 });
