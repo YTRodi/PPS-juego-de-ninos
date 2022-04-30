@@ -5,7 +5,7 @@ import AnimatedLottieView from 'lottie-react-native';
 import Constants from 'expo-constants';
 import { useFadeAnim } from '../../hooks';
 import { BASE_FADE_ANIMATION_TIME } from '../../hooks/useFadeAnim';
-import lottieSource from '../../../assets/lottie/lottie-video-game-console.json';
+import lottieSource from '../../../assets/lottie/train.json';
 
 const defaultBackgroundColor = '#ffffff';
 
