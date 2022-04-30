@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.ytrodi.PPSApp2"
+      "package": "com.ytrodi.PPSJuegoDeNinos"
     },
     "web": {
       "favicon": "./assets/favicon.png"
