@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { Headline } from 'react-native-paper';
-import AnimatedLottieView from 'lottie-react-native';
-import Constants from 'expo-constants';
 import { useFadeAnim } from '../../hooks';
 import { BASE_FADE_ANIMATION_TIME } from '../../hooks/useFadeAnim';
-import lottieSource from '../../../assets/lottie/train.json';
-
-const defaultBackgroundColor = '#ffffff';
+import AppLogo from '../../components/AppLogo';
 
 function SplashProvider({ children }: { children: React.ReactNode }) {
   const fadeAnimation = useFadeAnim();
@@ -21,6 +17,13 @@ function SplashProvider({ children }: { children: React.ReactNode }) {
     }
   }, [appIsReady]);
 
+  const onLoadStart = useCallback(() => fadeAnimation.show(), []);
+  const onLoadEnd = useCallback(() => {
+    setTimeout(async () => {
+      fadeAnimation.hide(({ finished }) => finished && setAppIsReady(true));
+    }, BASE_FADE_ANIMATION_TIME);
+  }, []);
+
   useEffect(() => {
     fadeAnimation.show();
   }, []);
@@ -30,23 +33,20 @@ function SplashProvider({ children }: { children: React.ReactNode }) {
       {appIsReady && children}
       {!isSplashAnimationComplete && (
         <View style={styles.splash}>
+          <Animated.Image
+            source={require('../../../assets/images/background.png')}
+            style={styles.backgroundImage}
+          />
+
           <Animated.View style={fadeAnimation.style}>
             <Headline style={styles.title}>Rodi Yago</Headline>
           </Animated.View>
-          <View style={styles.lottieContainer}>
-            <AnimatedLottieView
-              source={lottieSource}
-              autoPlay
-              loop={false}
-              duration={BASE_FADE_ANIMATION_TIME * 2}
-              onAnimationFinish={() => {
-                fadeAnimation.hide();
-                setTimeout(() => {
-                  setAppIsReady(true);
-                }, BASE_FADE_ANIMATION_TIME);
-              }}
-            />
-          </View>
+          <AppLogo
+            animated
+            onLoadStart={onLoadStart}
+            onLoadEnd={onLoadEnd}
+            styles={fadeAnimation.style}
+          />
           <Animated.View style={fadeAnimation.style}>
             <Headline style={styles.title}>División 4B</Headline>
           </Animated.View>
@@ -63,11 +63,16 @@ const styles = StyleSheet.create({
   splash: {
     flex: 1,
     justifyContent: 'space-around',
-    backgroundColor:
-      Constants.manifest?.splash?.backgroundColor || defaultBackgroundColor,
+    alignItems: 'center',
+  },
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject,
+    width: '100%',
+    opacity: 0.3,
   },
   title: {
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   lottieContainer: {
     height: 300,
@@ -75,3 +80,9 @@ const styles = StyleSheet.create({
 });
 
 export default SplashProvider;
+
+// TODO:
+// OK - #1 Resolver estos comentarios: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDk5NTk3MDg3NzY3/details
+// #2 Luego resolver estos comentarios: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDk5NTg2MDEzNzgw/details
+// #3 Revisar la descripción de esta tarea e implementar: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDc5ODEwNTEwMjI4/details
+// #4 Resolver más comentarios!: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDc5ODEwNTEwMjI5/details

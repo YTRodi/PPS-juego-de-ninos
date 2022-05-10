@@ -213,7 +213,7 @@ function MainSquare({ theme, language }: MainSquareProps) {
       name: {
         [LanguagesEnum.ES]: 'Dos',
         [LanguagesEnum.EN]: 'Two',
-        [LanguagesEnum.PR]: 'Três',
+        [LanguagesEnum.PR]: 'Dois',
       }[language],
     },
     {
@@ -330,6 +330,7 @@ function MainSquare({ theme, language }: MainSquareProps) {
           }[theme]
         }
         numColumns={2}
+        keyExtractor={item => item.image}
         renderItem={({ item, index }) => {
           return (
             <View key={index} style={wrapperStyles}>

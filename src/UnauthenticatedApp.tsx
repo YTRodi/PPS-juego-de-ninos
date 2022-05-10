@@ -102,80 +102,86 @@ function UnauthenticatedApp() {
         style={styles.backgroundImage}
       />
 
-      <View style={styles.headerContainer}>{renderHeader()}</View>
+      <View style={styles.contentWrapper}>
+        <View style={styles.headerContainer}>{renderHeader()}</View>
 
-      <View style={styles.formGroup}>
-        <TextInput
-          mode='outlined'
-          keyboardType='email-address'
-          returnKeyType='next'
-          autoComplete={false}
-          autoCapitalize='none'
-          label='Correo electrónico'
-          placeholder='Correo electrónico'
-          value={formValues.email}
-          onChangeText={handleChange('email')}
-          onBlur={handleBlur('email')}
-          left={<TextInput.Icon name='email' color={getInputEmailIconColor} />}
-          error={Boolean(formErrors.email && touched.email)}
-        />
-        {formErrors.email && touched.email && (
-          <Paragraph style={styles.textError}>{formErrors.email}</Paragraph>
-        )}
-      </View>
+        <View style={styles.formGroup}>
+          <TextInput
+            mode='outlined'
+            keyboardType='email-address'
+            returnKeyType='next'
+            autoComplete={false}
+            autoCapitalize='none'
+            label='Correo electrónico'
+            placeholder='Correo electrónico'
+            value={formValues.email}
+            onChangeText={handleChange('email')}
+            onBlur={handleBlur('email')}
+            left={
+              <TextInput.Icon name='email' color={getInputEmailIconColor} />
+            }
+            error={Boolean(formErrors.email && touched.email)}
+          />
+          {formErrors.email && touched.email && (
+            <Paragraph style={styles.textError}>{formErrors.email}</Paragraph>
+          )}
+        </View>
 
-      <View style={styles.formGroup}>
-        <TextInput
-          mode='outlined'
-          secureTextEntry={hidePassword}
-          autoComplete={false}
-          autoCapitalize='none'
-          label='Contraseña'
-          placeholder='Contraseña'
-          value={formValues.password}
-          onChangeText={handleChange('password')}
-          onBlur={handleBlur('password')}
-          left={
-            <TextInput.Icon name='lock' color={getInputPasswordIconColor} />
-          }
-          right={
-            <TextInput.Icon
-              name={hidePassword ? 'eye' : 'eye-off'}
-              onPress={toggleHidePassword}
-              color={getInputPasswordIconColor}
-            />
-          }
-          error={Boolean(formErrors.password && touched.password)}
-        />
-        {formErrors.password && touched.password && (
-          <Paragraph style={styles.textError}>{formErrors.password}</Paragraph>
-        )}
-      </View>
+        <View style={styles.formGroup}>
+          <TextInput
+            mode='outlined'
+            secureTextEntry={hidePassword}
+            autoComplete={false}
+            autoCapitalize='none'
+            label='Contraseña'
+            placeholder='Contraseña'
+            value={formValues.password}
+            onChangeText={handleChange('password')}
+            onBlur={handleBlur('password')}
+            left={
+              <TextInput.Icon name='lock' color={getInputPasswordIconColor} />
+            }
+            right={
+              <TextInput.Icon
+                name={hidePassword ? 'eye' : 'eye-off'}
+                onPress={toggleHidePassword}
+                color={getInputPasswordIconColor}
+              />
+            }
+            error={Boolean(formErrors.password && touched.password)}
+          />
+          {formErrors.password && touched.password && (
+            <Paragraph style={styles.textError}>
+              {formErrors.password}
+            </Paragraph>
+          )}
+        </View>
 
-      <Button
-        style={styles.button}
-        mode='contained'
-        disabled={isLoading || isValidating || !isValid}
-        loading={isLoading || isValidating}
-        onPress={handleSubmit}
-      >
-        {isLoginScreen ? 'Iniciar sesión' : 'Registrarse'}
-      </Button>
+        <Button
+          style={styles.button}
+          mode='contained'
+          disabled={isLoading || isValidating || !isValid}
+          loading={isLoading || isValidating}
+          onPress={handleSubmit}
+        >
+          {isLoginScreen ? 'Iniciar sesión' : 'Registrarse'}
+        </Button>
 
-      <View style={styles.captionContainer}>
-        <Caption>
-          {isLoginScreen ? '¿No tienes cuenta?' : '¿Ya tienes una cuenta?'}{' '}
-          <Caption style={styles.captionText} onPress={reset}>
-            {isLoginScreen ? 'Regístrate!' : 'Inicia sesión!'}
+        <View style={styles.captionContainer}>
+          <Caption>
+            {isLoginScreen ? '¿No tienes cuenta?' : '¿Ya tienes una cuenta?'}{' '}
+            <Caption style={styles.captionText} onPress={reset}>
+              {isLoginScreen ? 'Regístrate!' : 'Inicia sesión!'}
+            </Caption>
           </Caption>
-        </Caption>
-      </View>
+        </View>
 
-      <HardcodedPersons
-        onSelectPerson={person =>
-          setValues({ email: person.email, password: person.password })
-        }
-      />
+        <HardcodedPersons
+          onSelectPerson={person =>
+            setValues({ email: person.email, password: person.password })
+          }
+        />
+      </View>
     </View>
   );
 }
@@ -184,16 +190,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'white',
-    paddingHorizontal: 16,
+    position: 'relative',
   },
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
     width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
     opacity: 0.1,
+  },
+  contentWrapper: {
+    paddingHorizontal: 16,
   },
   headerContainer: {
     flexDirection: 'row',

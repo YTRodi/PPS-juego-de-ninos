@@ -10,37 +10,37 @@ interface Props {
 
 export const BASE_FADE_ANIMATION_TIME = 1200;
 
-function useFadeAnim({
+function useFadeAnimation({
   hidden = true,
   duration = BASE_FADE_ANIMATION_TIME,
   showDuration,
   hideDuration,
 }: Props = {}) {
-  const fadeAnim = useRef(new Animated.Value(hidden ? 0 : 1)).current;
+  const fadeAnimation = useRef(new Animated.Value(hidden ? 0 : 1)).current;
 
-  function show() {
-    return Animated.timing(fadeAnim, {
+  function show(endCallback?: Animated.EndCallback) {
+    return Animated.timing(fadeAnimation, {
       toValue: 1,
       duration: showDuration || duration,
       useNativeDriver: true,
-    }).start();
+    }).start(endCallback);
   }
 
-  function hide() {
-    return Animated.timing(fadeAnim, {
+  function hide(endCallback?: Animated.EndCallback) {
+    return Animated.timing(fadeAnimation, {
       toValue: 0,
       duration: hideDuration || duration,
       useNativeDriver: true,
-    }).start();
+    }).start(endCallback);
   }
 
   return {
     show,
     hide,
     style: {
-      opacity: fadeAnim,
+      opacity: fadeAnimation,
     },
   };
 }
 
-export default useFadeAnim;
+export default useFadeAnimation;
