@@ -83,6 +83,6 @@ export default SplashProvider;
 
 // TODO:
 // OK - #1 Resolver estos comentarios: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDk5NTk3MDg3NzY3/details
-// #2 Luego resolver estos comentarios: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDk5NTg2MDEzNzgw/details
+// OK - #2 Luego resolver estos comentarios: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDk5NTg2MDEzNzgw/details
 // #3 Revisar la descripción de esta tarea e implementar: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDc5ODEwNTEwMjI4/details
 // #4 Resolver más comentarios!: https://classroom.google.com/c/NDc5ODEwNTEwMTkz/a/NDc5ODEwNTEwMjI5/details

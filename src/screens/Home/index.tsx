@@ -10,6 +10,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import { Colors } from 'react-native-paper';
 import { Audio } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useToast } from 'react-native-toast-notifications';
@@ -57,7 +58,7 @@ function Home() {
       />
 
       <MainSquare theme={theme} language={language} />
-      <ThemeButtons setTheme={setTheme} />
+      <ThemeButtons theme={theme} setTheme={setTheme} />
     </SafeAreaView>
   );
 }
@@ -74,10 +75,13 @@ function Languages({ language, setLanguage, onLogout }: LanguagesProps) {
     alignItems: 'center',
   };
 
+  const wrapperStyles = {
+    borderColor: Colors.red400,
+  };
+
   const textStyles = {
     fontSize: 40,
     borderColor: 'white',
-    marginRight: 8,
   };
 
   const mappedLanguages = {
@@ -85,6 +89,10 @@ function Languages({ language, setLanguage, onLogout }: LanguagesProps) {
     [LanguagesEnum.EN]: 'Inglés',
     [LanguagesEnum.PR]: 'Portugués',
   }[language];
+
+  function checkIfIsSelected(languageParam: LanguagesEnum) {
+    return languageParam === language;
+  }
 
   return (
     <View style={containerStyles}>
@@ -94,22 +102,43 @@ function Languages({ language, setLanguage, onLogout }: LanguagesProps) {
         </Text>
       </View>
 
-      <View style={{ flexDirection: 'row' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <TouchableOpacity
           activeOpacity={activeOpacity}
           onPress={() => setLanguage(LanguagesEnum.ES)}
+          style={{
+            borderWidth: checkIfIsSelected(LanguagesEnum.ES) ? 2 : 0,
+            marginRight: 8,
+            ...wrapperStyles,
+          }}
         >
           <Text style={textStyles}>🇪🇸</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={activeOpacity}
           onPress={() => setLanguage(LanguagesEnum.EN)}
+          style={{
+            borderWidth: checkIfIsSelected(LanguagesEnum.EN) ? 2 : 0,
+            marginRight: 8,
+            ...wrapperStyles,
+          }}
         >
           <Text style={textStyles}>🇬🇧</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={activeOpacity}
           onPress={() => setLanguage(LanguagesEnum.PR)}
+          style={{
+            borderWidth: checkIfIsSelected(LanguagesEnum.PR) ? 2 : 0,
+            marginRight: 8,
+            ...wrapperStyles,
+          }}
         >
           <Text style={textStyles}>🇵🇹</Text>
         </TouchableOpacity>
@@ -365,29 +394,43 @@ function MainSquare({ theme, language }: MainSquareProps) {
 }
 
 interface ThemeButtonsProps {
+  theme: ThemeEnum;
   setTheme: React.Dispatch<React.SetStateAction<ThemeEnum>>;
 }
 
-function ThemeButtons({ setTheme }: ThemeButtonsProps) {
+function ThemeButtons({ setTheme, ...rest }: ThemeButtonsProps) {
   const themes = [
     { image: require('../../../assets/colors.jpg'), kind: ThemeEnum.COLORS },
     { image: require('../../../assets/numbers.jpg'), kind: ThemeEnum.NUMBERS },
     { image: require('../../../assets/animals.jpg'), kind: ThemeEnum.ANIMALS },
   ];
 
+  const selectedThemeStyles = {
+    borderWidth: 2,
+    borderColor: Colors.red400,
+  };
+
   return (
     <View style={{ flex: 1, marginTop: 16 }}>
       {themes.map((theme, index) => {
+        const isSelected = theme.kind === rest.theme;
+
         return (
           <TouchableOpacity
             key={index}
             activeOpacity={activeOpacity}
             onPress={() => setTheme(theme.kind)}
-            style={{ flex: 1, marginBottom: index !== 2 ? 8 : 0 }}
+            style={{
+              flex: 1,
+              marginBottom: index !== 2 ? 8 : 0,
+              padding: 2,
+              borderRadius: 4,
+              ...(isSelected ? selectedThemeStyles : {}),
+            }}
           >
             <Image
               source={theme.image}
-              style={{ height: '100%', width: '100%' }}
+              style={{ height: '100%', width: '100%', borderRadius: 4 }}
             />
           </TouchableOpacity>
         );
