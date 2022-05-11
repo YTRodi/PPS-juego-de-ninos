@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   captionContainer: {
     marginTop: 8,
-    marginBottom: 40,
+    marginBottom: 16,
   },
   captionText: {
     color: theme.colors.accent,
